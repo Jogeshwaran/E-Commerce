@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-import {getAuth,signInWithRedirect,signInWithPopup,GoogleAuthProvider,signInWithEmailAndPassword , createUserWithEmailAndPassword} from "firebase/auth";
+import {getAuth,signInWithRedirect,signInWithPopup,GoogleAuthProvider,signInWithEmailAndPassword , createUserWithEmailAndPassword, signOut, onAuthStateChanged} from "firebase/auth";
 import {getFirestore,doc,getDoc,setDoc} from 'firebase/firestore';
 const firebaseConfig = {
   apiKey: "AIzaSyBgIUZMDZ1xCSpH9ceBpuY5VFcxCL3QGPA",
@@ -80,6 +80,9 @@ export const SignInUserAuthFromEmailAndPassword = async(email,password) => {
 
 }
 
+export const signUserOut = async() => await signOut(Auth);
+
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(Auth,callback)
 
 // flow pesudocode
 

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { userContext } from "../../context/context";
 import { createUserAuthFromEmailAndPassword, signInWithGoogle,createUserDocFromEmailAndPassword, createUserDocumentFromAuth, SignInUserAuthFromEmailAndPassword } from "../../utils/firebase/Firebase-Authentication";
 import Button from "../button/button-component";
 import FormInput from "../form-input/form-input-component";
@@ -12,17 +13,22 @@ export const SignIn = () => {
 
     const [formField , setFormField] = useState(defaultFormField);
     const {email,password} = formField;
+    //const { setCurrentUser} = useContext(userContext);
+
     
         
     const logInGoogleUsers = async() =>{
         const response = await signInWithGoogle();
-        console.log(response)
-        const userDocRef = await createUserDocumentFromAuth(response.user)
+        //setCurrentUser(response.user)
+        //centrailized in context
+       // const userDocRef = await createUserDocumentFromAuth(response.user)
     }
 
     const resetForm=() =>{
         setFormField(defaultFormField)
     }
+
+    //for setting the currentUser state context
 
          
     const handleSubmit = async(event) =>{
@@ -32,6 +38,7 @@ export const SignIn = () => {
         try{
             const response = await SignInUserAuthFromEmailAndPassword(email,password)
             alert('sign in sucessfull')
+            //setCurrentUser(response.user);
         
         }catch(error){
             
