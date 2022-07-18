@@ -5,7 +5,7 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 import {getAuth,signInWithRedirect,signInWithPopup,GoogleAuthProvider,signInWithEmailAndPassword , createUserWithEmailAndPassword, signOut, onAuthStateChanged} from "firebase/auth";
-import {getFirestore,doc,getDoc,setDoc} from 'firebase/firestore';
+import {getFirestore,doc,getDoc,setDoc, collection, writeBatch, query, getDocs} from 'firebase/firestore';
 const firebaseConfig = {
   apiKey: "AIzaSyBgIUZMDZ1xCSpH9ceBpuY5VFcxCL3QGPA",
   authDomain: "e-commerce-db-bf0cd.firebaseapp.com",
@@ -97,3 +97,62 @@ export const onAuthStateChangedListener = (callback) => onAuthStateChanged(Auth,
 // => userDocRef->collection maari 
 // userSnapshot -> document maari 
 // try block code -> we are setting the data to the db 
+
+
+//method that allows to upload these data from shop data into the respective collections in the firestore
+
+//addCollectionAndDocuments => adding some new collection as well as the documents inside that collection
+//collectionKey => like users, categories
+//objectsToAdd => Json objects that we are going to add 
+
+export const addCollectionAndDocuments = async (collectionKey,objectsToAdd) =>{
+    //to create a collection reference similar to the DocumentRef , if there is already reference it ifnores else it creates one for us
+
+    const collectionRef = collection(db, collectionKey);
+    //This creates a collection Ref
+    //Next we have to decide how to store each of the objects inside of teh new collectionRef as a document
+    // writeBatch method for the above step
+
+    const batch = writeBatch(db);
+    //batch allows to do diff writes ,deletes,sets
+    //we need to create a bunch of set methods to create and set that obj into this collection
+
+    objectsToAdd.forEach((object) =>{
+        //create the document refernces
+        // object.title.toLowerCase() => key value
+        const docRef = doc(collectionRef,object.title.toLowerCase())
+        // sets the object that we get from the objectToAdd in the particular Collection and the keyvalue
+        // ie in the category collection under the key hats , men women like that it will add the objects
+        batch.set(docRef,object)
+    })
+
+    await batch.commit();
+    console.log('done');
+    
+}
+
+export const getCategoriesAndDocuments = async () =>{
+    // we need a collection Ref from where we get those data
+    const collectionRef = collection(db,'categories')
+
+    //We need a query method and getDocs method 
+    // generate a query from teh collectionRef
+
+    const q = query(collectionRef);
+    // this gives a object from which we can get a snapshot of how its going to be
+
+    const querySnapshot = await getDocs(q)
+    // getDocs is the asynchronous ability to fetch the document snapshots that we want
+
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot)=>{
+        const {title,items} = docSnapshot.data();
+        acc[title.toLowerCase()]=items;
+        return acc;
+    },{})
+    return categoryMap;
+    // querySnapshot.docs gives array of all individual documents inside i.e hats,men,women
+    // we have to reduce over the array to get the structure i.e hats:{
+    //     title : 'hats',
+    //     items : [{},{}]
+    // }
+}
