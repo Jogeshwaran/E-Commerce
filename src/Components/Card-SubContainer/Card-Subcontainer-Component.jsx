@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import './Card-Subcontainer-styling.scss';
 const CardSubContaiener = ({category}) =>{
 //In order to use the route we can either transform the div to link and pass the route to {to =""}
-// or we could use the useNavigate hook 
+// or we could use the useNavigate hook
+console.log('category',category); 
 
   const navigate = useNavigate()
   const onNavigateHandler = () => navigate(category.route)

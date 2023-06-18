@@ -1,0 +1,30 @@
+.inputFields{
+    width : 75%;
+    margin-left : 10px
+}
+
+.labels{
+    margin : 10px;
+}
+
+.button{
+    height : 25px;
+    width : 20%
+}
+
+.textbox{
+    height : 150px;
+    width : 75%;
+}
+
+.form{
+    width: 500px;
+    height: 500px;
+    box-sizing: inherit;
+    background: #fff;
+    border-radius: 0.28571429rem;
+    border: 1px solid rgba(34,36,38,.15);
+    box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+    position: relative;
+    max-width: 100%;
+}

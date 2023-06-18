@@ -6,6 +6,7 @@ import { CategoriesContext } from '../../context/categories-context'
 
 export const CategoriesPreview = () =>{
     const { categoryMap } = useContext(CategoriesContext);
+    console.log('categoryMap',categoryMap);
     
     
     return(
